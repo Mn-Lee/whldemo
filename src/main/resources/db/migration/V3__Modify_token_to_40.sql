@@ -1,0 +1,1 @@
+ALTER TABLE user modify token char(40) NULL;

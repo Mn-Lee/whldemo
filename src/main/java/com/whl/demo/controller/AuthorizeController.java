@@ -4,7 +4,7 @@ import com.whl.demo.dto.AccessTokenDTO;
 import com.whl.demo.dto.GithubUserDTO;
 import com.whl.demo.mapper.UserMapper;
 import com.whl.demo.provider.GithubProvider;
-import model.User;
+import com.whl.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ public class AuthorizeController {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
-    @Autowired
+    @Autowired(required = false)
     private UserMapper userMapper;
 
     @GetMapping("/callback")
@@ -51,16 +51,31 @@ public class AuthorizeController {
         System.out.println(githubUserDTO.getId() + " --- " + githubUserDTO.getLogin() + " --- " + githubUserDTO.getName());
 
         if(githubUserDTO!=null){
-            //登陆成功，写cookie, session
-            User user = new User();
-            user.setName(githubUserDTO.getLogin());
-            user.setAccountId(UUID.randomUUID().toString());
-            user.setToken(accessToken);
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
+            //登陆成功
 
-            userMapper.insert(user);
-            response.addCookie(new Cookie("token",user.getToken()));
+            //通过githubId判断是否注册
+            Long githubId = githubUserDTO.getId();
+            User user = userMapper.findUserByGitHubId(githubId);
+
+            if(user==null){
+                //未注册，将gitHubUserDTO转换成user并入库
+                user = new User();
+
+                user.setName(githubUserDTO.getLogin());
+                user.setAccountId(UUID.randomUUID().toString());
+                user.setToken(accessToken);
+                user.setGmtCreate(System.currentTimeMillis());
+                user.setGmtModified(user.getGmtCreate());
+                user.setBio(githubUserDTO.getAvatarUrl());
+                user.setGithubId(githubUserDTO.getId());
+
+                userMapper.insert(user);
+            }
+            //写cookie
+            Cookie loginTokenCookie = new Cookie("token",user.getToken());
+            //失效时间以秒为单位
+            loginTokenCookie.setMaxAge(60*60*24);
+            response.addCookie(loginTokenCookie);
 
             return "redirect:/";
         }else{

@@ -1,4 +1,4 @@
-package model;
+package com.whl.demo.model;
 
 public class User {
     private Integer id;
@@ -7,6 +7,25 @@ public class User {
     private String token;
     private Long gmtCreate;
     private Long gmtModified;
+    private String bio;
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public Long getGithubId() {
+        return githubId;
+    }
+
+    public void setGithubId(Long githubId) {
+        this.githubId = githubId;
+    }
+
+    private Long githubId;
 
     public Integer getId() {
         return id;
