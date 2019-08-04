@@ -72,10 +72,15 @@
     </dependencies>
 
     <build>
+        <defaultGoal>compile</defaultGoal>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludeDevtools>false</excludeDevtools>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.flywaydb</groupId>
@@ -94,13 +99,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludeDevtools>false</excludeDevtools>
-                </configuration>
-            </plugin>
+
         </plugins>
     </build>
 

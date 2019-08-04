@@ -1,0 +1,1 @@
+ALTER TABLE user ADD editor_id int default -1 null ;

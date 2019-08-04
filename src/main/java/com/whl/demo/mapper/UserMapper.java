@@ -1,10 +1,7 @@
 package com.whl.demo.mapper;
 
 import com.whl.demo.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
@@ -18,4 +15,10 @@ public interface UserMapper {
 
     @Select("select * from user where github_id=#{github_id}")
     User findUserByGitHubId(@Param("github_id") Long GithubId);
+
+    @Update("update user set editor_id=#{id}+10000 where id = #{id}")
+    void setEditorIdById(@Param("id") int id);
+
+    @Select("select editor_id from user where id=#{id}")
+    Integer findEditorIdById(@Param("id") Integer id);
 }

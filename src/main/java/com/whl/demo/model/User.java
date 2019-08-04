@@ -8,6 +8,15 @@ public class User {
     private Long gmtCreate;
     private Long gmtModified;
     private String bio;
+    private Integer editorId;
+
+    public Integer getEditorId() {
+        return editorId;
+    }
+
+    public void setEditorId(Integer editorId) {
+        this.editorId = editorId;
+    }
 
     public String getBio() {
         return bio;
@@ -76,5 +85,20 @@ public class User {
 
     public void setGmtModified(Long gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", accountId='" + accountId + '\'' +
+                ", name='" + name + '\'' +
+                ", token='" + token + '\'' +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                ", bio='" + bio + '\'' +
+                ", editorId=" + editorId +
+                ", githubId=" + githubId +
+                '}';
     }
 }
